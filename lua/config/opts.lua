@@ -19,6 +19,7 @@ function opts.init()
 	opt.scrolloff = 8
 	opt.colorcolumn = "80"
 	opt.laststatus = 3
+	opt.cmdheight = 0
 
 	-- Indentation : DÉFAUT global (overridé par after/ftplugin/)
 	opt.tabstop = 4
