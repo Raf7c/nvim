@@ -1,21 +1,18 @@
-local M = {}
-
-function M.init()
-	vim.pack.add({
-		-- the repo is named "nvim", force a clearer name
-		{ src = "https://github.com/catppuccin/nvim", name = "catppuccin" },
-	})
-
-	require("catppuccin").setup({
-		flavour = "mocha",
-		-- flavour picked from 'background' (driven by auto-dark-mode)
-		background = {
-			light = "latte",
-			dark = "mocha",
+require("catppuccin").setup({
+	flavour = "auto", -- follows 'background' (driven by auto-dark-mode)
+	background = {
+		light = "latte",
+		dark = "mocha",
+	},
+	integrations = {
+		which_key = true,
+		navic = {
+			enabled = true,
+			custom_bg = "NONE",
 		},
-	})
+	},
+})
 
-	vim.cmd.colorscheme("catppuccin")
-end
-
-return M
+-- "catppuccin-nvim": since nvim 0.12 a builtin "catppuccin" ships with the
+-- editor; the plugin's colorscheme was renamed to avoid the conflict
+vim.cmd.colorscheme("catppuccin-nvim")
