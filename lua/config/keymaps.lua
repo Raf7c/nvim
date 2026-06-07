@@ -1,28 +1,32 @@
 local keymaps = {}
 
 function keymaps.init()
-  local keymap = vim.keymap
+	local keymap = vim.keymap
 
-  -- No arrow key allowed
-  vim.keymap.set("n", "<up>", "<nop>", { silent = true })
-  vim.keymap.set("n", "<down>", "<nop>", { silent = true })
-  vim.keymap.set("n", "<left>", "<nop>", { silent = true })
-  vim.keymap.set("n", "<right>", "<nop>", { silent = true })
-  -- Remove macro key since I don't use it
-  vim.keymap.set("n", "q", "<nop>", { silent = true })
+	-- Config
+	keymap.set("n", "<leader>re", "<cmd>restart<cr>", { desc = "Restart Neovim (:restart)" })
 
-  -- Save
-  vim.keymap.set("n", "<C-S>", "<CMD>w<CR>", { silent = true, desc = "Save file" })
-  
-  -- Window
-  keymap.set("n", "<leader>wd", "<C-W>c", { desc = "Close Window" })
-  keymap.set("n", "<leader>ws", "<C-W>s", { desc = "Split Below" })
-  keymap.set("n", "<leader>wv", "<C-W>v", { desc = "Split Right" })
+	-- Disabled keys
+	keymap.set("n", "<up>", "<nop>", { silent = true })
+	keymap.set("n", "<down>", "<nop>", { silent = true })
+	keymap.set("n", "<left>", "<nop>", { silent = true })
+	keymap.set("n", "<right>", "<nop>", { silent = true })
+	keymap.set("n", "q", "<nop>", { silent = true }) -- no macros
 
-  -- Tab
-  vim.keymap.set("n", "<leader>tt", "<CMD>tabnew<CR>", { desc = "New Tab", silent = true })
-  vim.keymap.set("n", "<leader>td", "<CMD>tabclose<CR>", { desc = "Close Tab", silent = true })
-  vim.keymap.set("n", "<leader>tn", "<CMD>tabnext<CR>", { desc = "Next tab", silent = true })
-  vim.keymap.set("n", "<leader>tp", "<CMD>tabprev<CR>", { desc = "Prev tab", silent = true })
+	-- Lines
+	keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down", silent = true })
+	keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up", silent = true })
+	keymap.set("n", "J", "mzJ`z", { desc = "Join lines without moving cursor" })
+
+	-- Indent (keep selection)
+	keymap.set("v", "<", "<gv", { desc = "Unindent and keep selection" })
+	keymap.set("v", ">", ">gv", { desc = "Indent and keep selection" })
+
+	-- Search
+	keymap.set({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch", silent = true })
+
+	-- Save
+	keymap.set("n", "<C-s>", "<cmd>w<cr>", { desc = "Save file", silent = true })
 end
+
 return keymaps

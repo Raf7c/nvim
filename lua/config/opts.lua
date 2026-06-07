@@ -21,7 +21,7 @@ function opts.init()
 	opt.laststatus = 3
 	opt.cmdheight = 0
 
-	-- Indentation : DÉFAUT global (overridé par after/ftplugin/)
+	-- Indentation: global DEFAULT (overridden by after/ftplugin/)
 	opt.tabstop = 4
 	opt.softtabstop = 4
 	opt.shiftwidth = 4
