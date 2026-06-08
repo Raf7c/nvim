@@ -1,0 +1,7 @@
+{
+	"Module": {
+		"prefix": "modret",
+		"body": ["local M = {}", "", "$0", "", "return M"],
+		"description": "Local module with return"
+	}
+}

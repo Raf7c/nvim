@@ -27,12 +27,20 @@ function pack.init()
 		{ src = "https://github.com/SmiteshP/nvim-navic" },
 		{ src = "https://github.com/christoomey/vim-tmux-navigator" }, -- <C-h/j/k/l> splits <-> tmux panes, no config
 		{ src = "https://github.com/lukas-reineke/indent-blankline.nvim" },
+		{ src = "https://github.com/saghen/blink.lib" }, -- blink.cmp dependency
+		{ src = "https://github.com/saghen/blink.cmp" }, -- v2 (main): built from source, needs the Rust toolchain
+		{ src = "https://github.com/rafamadriz/friendly-snippets" }, -- snippets for the blink snippet source
+		{ src = "https://github.com/neovim/nvim-lspconfig" }, -- server configs database (lsp/*.lua)
+		{ src = "https://github.com/mason-org/mason.nvim" },
+		{ src = "https://github.com/rachartier/tiny-inline-diagnostic.nvim" },
+		{ src = "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim" },
 		{ src = "https://github.com/MunifTanjim/nui.nvim" }, -- neo-tree dependency
 		{ src = "https://github.com/nvim-neo-tree/neo-tree.nvim", version = "v3.x" },
 	})
 
 	import("plugins")
 	import("plugins.colorschemes")
+	import("plugins.lsp")
 end
 
 return pack

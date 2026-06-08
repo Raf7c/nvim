@@ -1,6 +1,7 @@
 -- nvim-treesitter (main branch): install missing parsers, async
 require("nvim-treesitter").install({
 	"lua",
+	"python",
 })
 
 vim.api.nvim_create_autocmd("FileType", {
