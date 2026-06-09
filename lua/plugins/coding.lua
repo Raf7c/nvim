@@ -2,6 +2,9 @@
 require("nvim-treesitter").install({
 	"lua",
 	"python",
+	"javascript",
+	"typescript",
+	"tsx",
 })
 
 vim.api.nvim_create_autocmd("FileType", {

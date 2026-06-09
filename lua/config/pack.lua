@@ -32,6 +32,8 @@ function pack.init()
 		{ src = "https://github.com/rafamadriz/friendly-snippets" }, -- snippets for the blink snippet source
 		{ src = "https://github.com/neovim/nvim-lspconfig" }, -- server configs database (lsp/*.lua)
 		{ src = "https://github.com/mason-org/mason.nvim" },
+		{ src = "https://github.com/stevearc/conform.nvim" },
+		{ src = "https://github.com/mfussenegger/nvim-lint" },
 		{ src = "https://github.com/rachartier/tiny-inline-diagnostic.nvim" },
 		{ src = "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim" },
 		{ src = "https://github.com/MunifTanjim/nui.nvim" }, -- neo-tree dependency

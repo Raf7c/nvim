@@ -1,7 +1,6 @@
--- Lua: everything specific to this language lives here.
--- Optional fields: enabled (boolean or function), setup (function,
--- for language-specific plugins), and later: formatters, linters.
+-- Lua: simple case — stylua formatter, no linter.
 return {
-	lsp = { "lua_ls" }, -- servers to enable (overrides in nvim/lsp/)
-	tools = { "lua-language-server", "stylua" }, -- mason binaries
+	lsp = { "lua_ls" }, -- settings overrides in nvim/lsp/lua_ls.lua
+	tools = { "lua-language-server", "stylua" },
+	formatters = { lua = { "stylua" } },
 }

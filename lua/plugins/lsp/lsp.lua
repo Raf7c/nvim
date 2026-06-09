@@ -1,6 +1,6 @@
 -- Diagnostics (defaults kept: underline = true, update_in_insert = false)
 -- Inline display is handled by tiny-inline-diagnostic, which requires
--- the native virtual_text to stay disabled (its default since nvim 0.11).
+-- the native virtual_text to stay disabled.
 require("tiny-inline-diagnostic").setup()
 
 vim.diagnostic.config({
@@ -19,23 +19,18 @@ vim.diagnostic.config({
 -- installs the binaries via mason and enables the servers.
 -- Server configs are resolved from nvim/lsp/*.lua + nvim-lspconfig.
 local servers, tools = {}, {}
-local dir = vim.fn.stdpath("config") .. "/lua/plugins/lang"
-for _, file in ipairs(vim.fn.globpath(dir, "*.lua", false, true)) do
-	local lang = require("plugins.lang." .. vim.fn.fnamemodify(file, ":t:r"))
-	local enabled = lang.enabled
-	if type(enabled) == "function" then
-		enabled = enabled()
-	end
-	if enabled ~= false then
-		vim.list_extend(servers, lang.lsp or {})
-		vim.list_extend(tools, lang.tools or {})
-		if lang.setup then
-			lang.setup() -- language-specific plugin configuration
-		end
+for _, lang in ipairs(require("utils.langs").list()) do
+	vim.list_extend(servers, lang.lsp or {})
+	vim.list_extend(tools, lang.tools or {})
+	if lang.setup then
+		lang.setup() -- language-specific plugin configuration
 	end
 end
 
 require("mason").setup({
+	-- Project/system binaries take precedence;
+	-- mason is only the fallback when nothing else provides the tool.
+	PATH = "append",
 	ui = {
 		border = "rounded",
 		icons = {
