@@ -1,8 +1,6 @@
--- nvim-lint: linting engine.
--- Linters per filetype come from the `linters` field of plugins/lang/*.lua.
--- A value is either a list of linters, or a function(bufnr) returning one
--- (e.g. built with utils/project.resolve for project-aware selection).
--- Custom linter definitions come from the `custom_linters` field.
+-- Linting engine. Linters come from the `linters`/`custom_linters` fields of
+-- plugins/lang/*.lua; a value is a list or a function(bufnr)
+-- (project-aware selection via utils/project.resolve).
 local linters_by_ft = {}
 for _, lang in ipairs(require("utils.langs").list()) do
 	for ft, linters in pairs(lang.linters or {}) do
@@ -21,7 +19,10 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
 			linters = linters(args.buf)
 		end
 		if linters and #linters > 0 then
+			vim.b[args.buf].active_linter = table.concat(linters, ", ") -- read by the statusline
 			require("lint").try_lint(linters)
+		else
+			vim.b[args.buf].active_linter = nil
 		end
 	end,
 })

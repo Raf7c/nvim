@@ -35,7 +35,7 @@ local tools = project.resolve({
 })
 
 return {
-	lsp = { "basedpyright" }, -- settings overrides in nvim/lsp/basedpyright.lua
+	lsp = { "basedpyright" }, -- config in nvim/lsp/basedpyright.lua
 	tools = {
 		"basedpyright",
 		"ruff",

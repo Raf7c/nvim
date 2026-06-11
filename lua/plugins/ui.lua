@@ -1,4 +1,3 @@
--- which-key.nvim: popup with available keymaps
 require("which-key").setup({
 	preset = "helix",
 	win = {
@@ -15,41 +14,15 @@ require("which-key").setup({
 		{ "<leader>sn", group = "Notifications" },
 		{ "<leader>c", group = "LSP" },
 		{ "<leader>cw", group = "Workspace" },
+		{ "<leader>g", group = "Git" },
 	},
 })
 
 -- nvim-navic: code context (class > method > ...) in the winbar
 require("nvim-navic").setup({
-	icons = {
-		File = "󰈙 ",
-		Module = "󰏗 ",
-		Namespace = "󰌗 ",
-		Package = "󰏖 ",
-		Class = "󰌗 ",
-		Method = "󰆧 ",
-		Property = "󰜢 ",
-		Field = "󰜢 ",
-		Constructor = " ",
-		Enum = "󰕘 ",
-		Interface = "󰕘 ",
-		Function = "󰊕 ",
-		Variable = "󰆧 ",
-		Constant = "󰏿 ",
-		String = "󰀬 ",
-		Number = "󰎠 ",
-		Boolean = "◩ ",
-		Array = "󰅪 ",
-		Object = "󰅩 ",
-		Key = "󰌋 ",
-		Null = "󰟢 ",
-		EnumMember = " ",
-		Struct = "󰌗 ",
-		Event = " ",
-		Operator = "󰆕 ",
-		TypeParameter = "󰊄 ",
-	},
+	icons = require("utils.icons").kinds,
 	lsp = { auto_attach = true },
-	highlight = true,
+	highlight = true, -- required by the catppuccin navic integration
 	separator = " › ",
 	depth_limit = 5,
 	depth_limit_indicator = "…",
@@ -87,4 +60,62 @@ require("incline").setup({
 			guibg = mantle_bg(),
 		}
 	end,
+})
+
+-- lualine: statusline
+local icons = require("utils.icons")
+
+-- Formatters for the current buffer (set by plugins/format.lua via vim.b.active_formatters)
+local function formatters()
+	local active = vim.b.active_formatters
+	if not active or active == "" then
+		return ""
+	end
+	return icons.statusline.formatters .. " " .. active
+end
+
+-- Active linters (set by plugins/lint.lua via vim.b.active_linter)
+local function linters()
+	local active = vim.b.active_linter
+	if not active or active == "" then
+		return ""
+	end
+	return icons.statusline.linters .. " " .. active
+end
+
+require("lualine").setup({
+	-- theme/globalstatus defaults already follow the colorscheme and laststatus = 3
+	options = {
+		component_separators = "|",
+		section_separators = "",
+	},
+	sections = {
+		lualine_a = { "mode" },
+		lualine_b = {
+			{ "branch", icon = icons.statusline.branch },
+			{
+				"diff",
+				symbols = icons.statusline.diff,
+				source = function()
+					local gs = vim.b.gitsigns_status_dict
+					if gs then
+						return { added = gs.added, modified = gs.changed, removed = gs.removed }
+					end
+				end,
+			},
+			{
+				"diagnostics",
+				symbols = {
+					error = icons.diagnostics.error .. " ",
+					warn = icons.diagnostics.warn .. " ",
+					info = icons.diagnostics.info .. " ",
+					hint = icons.diagnostics.hint .. " ",
+				},
+			},
+		},
+		lualine_c = { "filename" },
+		lualine_x = { formatters, linters, "encoding", "fileformat", "filetype" },
+		lualine_y = { "progress" },
+		lualine_z = { "location" },
+	},
 })

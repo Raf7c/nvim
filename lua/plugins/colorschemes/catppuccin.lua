@@ -1,15 +1,10 @@
+-- flavour = "auto" (default) follows 'background', driven by auto-dark-mode
 require("catppuccin").setup({
-	flavour = "auto", -- follows 'background' (driven by auto-dark-mode)
-	background = {
-		light = "latte",
-		dark = "mocha",
-	},
 	integrations = {
 		which_key = true,
-		navic = {
-			enabled = true,
-			custom_bg = "NONE",
-		},
+		navic = { enabled = true },
+		snacks = { enabled = true },
+		mason = true,
 	},
 })
 

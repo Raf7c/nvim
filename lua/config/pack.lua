@@ -15,29 +15,23 @@ function pack.init()
 	vim.pack.add({
 		{ src = "https://github.com/f-person/auto-dark-mode.nvim" },
 		{ src = "https://github.com/catppuccin/nvim", name = "catppuccin-nvim" },
+		{ src = "https://github.com/nvim-mini/mini.nvim", version = "stable" },
 		{ src = "https://github.com/folke/which-key.nvim" },
-		{ src = "https://github.com/nvim-tree/nvim-web-devicons" }, -- incline dependency
 		{ src = "https://github.com/b0o/incline.nvim" },
-		{ src = "https://github.com/nvim-lua/plenary.nvim" }, -- telescope dependency
-		-- pinned to latest release tag, as recommended by the telescope README
-		{ src = "https://github.com/nvim-telescope/telescope.nvim", version = vim.version.range("*") },
-		{ src = "https://github.com/nvim-telescope/telescope-fzf-native.nvim" },
-		{ src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
+		{ src = "https://github.com/folke/snacks.nvim" },
+		{ src = "https://github.com/nvim-lualine/lualine.nvim" },
+		{ src = "https://github.com/lewis6991/gitsigns.nvim" },
 		{ src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
 		{ src = "https://github.com/SmiteshP/nvim-navic" },
 		{ src = "https://github.com/christoomey/vim-tmux-navigator" }, -- <C-h/j/k/l> splits <-> tmux panes, no config
-		{ src = "https://github.com/lukas-reineke/indent-blankline.nvim" },
 		{ src = "https://github.com/saghen/blink.lib" }, -- blink.cmp dependency
-		{ src = "https://github.com/saghen/blink.cmp" }, -- v2 (main): built from source, needs the Rust toolchain
+		{ src = "https://github.com/saghen/blink.cmp" }, -- v2 (main); fuzzy lib downloaded/built by blink.lua
 		{ src = "https://github.com/rafamadriz/friendly-snippets" }, -- snippets for the blink snippet source
-		{ src = "https://github.com/neovim/nvim-lspconfig" }, -- server configs database (lsp/*.lua)
 		{ src = "https://github.com/mason-org/mason.nvim" },
 		{ src = "https://github.com/stevearc/conform.nvim" },
 		{ src = "https://github.com/mfussenegger/nvim-lint" },
 		{ src = "https://github.com/rachartier/tiny-inline-diagnostic.nvim" },
 		{ src = "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim" },
-		{ src = "https://github.com/MunifTanjim/nui.nvim" }, -- neo-tree dependency
-		{ src = "https://github.com/nvim-neo-tree/neo-tree.nvim", version = "v3.x" },
 	})
 
 	import("plugins")

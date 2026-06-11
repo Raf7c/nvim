@@ -1,4 +1,5 @@
--- JS/TS: prettier by default (format + lint).. As soon as the project configures any tool,
+-- JS/TS: prettier as default formatter, no linter by default (eslint needs a
+-- project config). As soon as the project configures any tool,
 -- only the project's tools are used (no default added to fill gaps).
 local project = require("utils.project")
 local util = require("conform.util")
@@ -52,8 +53,8 @@ for _, ft in ipairs({ "javascript", "javascriptreact", "typescript", "typescript
 end
 
 return {
-	lsp = { "ts_ls" },
-	tools = { "typescript-language-server", "prettier", "eslint_d", "biome" },
+	lsp = { "vtsls" }, -- config in nvim/lsp/vtsls.lua
+	tools = { "vtsls", "prettier", "eslint_d", "biome" },
 	formatters = formatters,
 	linters = linters,
 	custom_formatters = {

@@ -1,9 +1,4 @@
+-- Default hooks already set 'background' to dark/light; only the poll rate deviates.
 require("auto-dark-mode").setup({
-	update_interval = 1000,
-	set_dark_mode = function()
-		vim.o.background = "dark"
-	end,
-	set_light_mode = function()
-		vim.o.background = "light"
-	end,
+	update_interval = 1000, -- default: 3000
 })

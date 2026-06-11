@@ -1,6 +1,11 @@
--- basedpyright overrides; base config (cmd, filetypes, root_markers)
--- comes from nvim-lspconfig and is merged automatically.
+-- basedpyright: standalone config (no nvim-lspconfig), used by vim.lsp.enable().
 return {
+	cmd = { "basedpyright-langserver", "--stdio" },
+	filetypes = { "python" },
+	root_markers = {
+		{ "pyrightconfig.json", "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile" },
+		{ ".git" },
+	},
 	settings = {
 		basedpyright = {
 			analysis = {

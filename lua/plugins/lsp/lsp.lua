@@ -1,23 +1,26 @@
--- Diagnostics (defaults kept: underline = true, update_in_insert = false)
 -- Inline display is handled by tiny-inline-diagnostic, which requires
 -- the native virtual_text to stay disabled.
-require("tiny-inline-diagnostic").setup()
+require("tiny-inline-diagnostic").setup({
+	options = { use_icons_from_diagnostic = true }, -- reuse the signcolumn icons
+})
 
+local icons = require("utils.icons")
 vim.diagnostic.config({
 	severity_sort = true,
+	virtual_text = false, -- required by tiny-inline-diagnostic (its display replaces it)
 	signs = {
 		text = {
-			[vim.diagnostic.severity.ERROR] = "❌",
-			[vim.diagnostic.severity.WARN] = "⚠️",
-			[vim.diagnostic.severity.INFO] = "💡",
-			[vim.diagnostic.severity.HINT] = "ℹ️",
+			[vim.diagnostic.severity.ERROR] = icons.diagnostics.error,
+			[vim.diagnostic.severity.WARN] = icons.diagnostics.warn,
+			[vim.diagnostic.severity.INFO] = icons.diagnostics.info,
+			[vim.diagnostic.severity.HINT] = icons.diagnostics.hint,
 		},
 	},
 })
 
 -- LSP engine: aggregates the per-language data files (plugins/lang/*.lua),
 -- installs the binaries via mason and enables the servers.
--- Server configs are resolved from nvim/lsp/*.lua + nvim-lspconfig.
+-- Server configs are standalone files in nvim/lsp/*.lua (no nvim-lspconfig).
 local servers, tools = {}, {}
 for _, lang in ipairs(require("utils.langs").list()) do
 	vim.list_extend(servers, lang.lsp or {})

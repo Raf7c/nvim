@@ -9,7 +9,6 @@ function opts.init()
 	vim.g.loaded_python3_provider = 0
 	vim.g.loaded_ruby_provider = 0
 
-	-- netrw
 	vim.g.netrw_banner = 0
 
 	-- Interface
@@ -20,7 +19,6 @@ function opts.init()
 	opt.signcolumn = "yes"
 	opt.list = true
 	opt.listchars:append("eol:↴")
-	opt.termguicolors = true
 	opt.guicursor = ""
 	opt.scrolloff = 8
 	opt.colorcolumn = "80"
@@ -38,16 +36,13 @@ function opts.init()
 	opt.smartcase = true
 	opt.inccommand = "split"
 
-	-- Completion
+	-- Native completion only; blink.cmp does not read 'completeopt'
 	opt.completeopt = "menuone,noselect,fuzzy,nosort"
-	opt.shortmess:append("c")
 
 	-- Files
-	opt.autoread = true
 	opt.autowrite = true
 	opt.confirm = true
 	opt.swapfile = false
-	opt.backup = false
 	opt.isfname:append("@-@")
 
 	-- Splits
@@ -57,23 +52,12 @@ function opts.init()
 	-- Mouse
 	opt.mouse = "a"
 	opt.mousescroll = "ver:3,hor:0"
-	opt.timeout = true
 	opt.timeoutlen = 300
 
 	-- Clipboard
 	opt.clipboard = "unnamedplus"
 
-	-- Undo
 	opt.undofile = true
-	opt.undodir = vim.fn.stdpath("data") .. "/undo"
-
-	-- Highlight on yank
-	vim.api.nvim_create_autocmd("TextYankPost", {
-		desc = "Highlight when yanking (copying) text",
-		callback = function()
-			vim.hl.on_yank()
-		end,
-	})
 end
 
 return opts

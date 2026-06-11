@@ -1,20 +1,16 @@
--- Diagnostics (global keymaps)
 local keymap = vim.keymap
 
-keymap.set("n", "[n", function()
-	vim.diagnostic.jump({ count = -1 })
-end, { desc = "Previous Diagnostic", silent = true })
-keymap.set("n", "]n", function()
-	vim.diagnostic.jump({ count = 1 })
-end, { desc = "Next Diagnostic", silent = true })
-keymap.set("n", "[d", function()
+-- [d / ]d (any diagnostic) are builtin defaults (:h ]d-default); errors get their own pair
+keymap.set("n", "[e", function()
 	vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
 end, { desc = "Previous Error", silent = true })
-keymap.set("n", "]d", function()
+keymap.set("n", "]e", function()
 	vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
 end, { desc = "Next Error", silent = true })
 keymap.set("n", "<leader>xd", vim.diagnostic.open_float, { desc = "Show Diagnostic", silent = true })
-keymap.set("n", "<leader>xD", "<cmd>Telescope diagnostics<cr>", { desc = "All Diagnostics", silent = true })
+keymap.set("n", "<leader>xD", function()
+	Snacks.picker.diagnostics()
+end, { desc = "All Diagnostics", silent = true })
 keymap.set("n", "<leader>xq", vim.diagnostic.setqflist, { desc = "Quickfix Diagnostics", silent = true })
 
 -- LSP (buffer-local, on attach)
@@ -28,20 +24,34 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			keymap.set(mode, lhs, rhs, { buffer = ev.buf, desc = desc, silent = true })
 		end
 
-		-- Navigation
-		map("n", "gd", vim.lsp.buf.definition, "Goto Definition")
+		-- Navigation (gri default covers implementation; builtin gi stays untouched)
+		map("n", "<leader>cd", vim.lsp.buf.definition, "Goto Definition")
 		map("n", "gD", vim.lsp.buf.declaration, "Goto Declaration")
-		map("n", "gi", vim.lsp.buf.implementation, "Goto Implementation")
 		map("n", "<leader>cr", vim.lsp.buf.references, "References")
 		map("n", "<leader>ct", vim.lsp.buf.type_definition, "Type Definition")
 
 		-- Actions
 		map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code Action")
 		map("n", "<leader>cR", vim.lsp.buf.rename, "Rename Symbol")
+		map("n", "<leader>co", function()
+			vim.lsp.buf.code_action({
+				context = { only = { "source.organizeImports" }, diagnostics = {} },
+				apply = true,
+			})
+		end, "Organize Imports")
 
 		-- Symbols
-		map("n", "<leader>cs", "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols")
-		map("n", "<leader>cS", "<cmd>Telescope lsp_workspace_symbols<cr>", "Workspace Symbols")
+		map("n", "<leader>cs", function()
+			Snacks.picker.lsp_symbols()
+		end, "Document Symbols")
+		map("n", "<leader>cws", function()
+			Snacks.picker.lsp_workspace_symbols()
+		end, "Workspace Symbols")
+
+		-- Workspace
+		map("n", "<leader>cwl", function()
+			vim.notify(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+		end, "List Workspace Folders")
 
 		map("n", "<leader>ci", "<cmd>checkhealth vim.lsp<cr>", "LSP Info")
 
