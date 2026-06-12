@@ -30,6 +30,12 @@ M.git_status = {
 	unmerged = "",
 }
 
+-- fold gutter glyphs ('fillchars', see the folds section of plugins/coding.lua)
+M.fold = {
+	open = "\u{EAB4}", -- nf-cod-chevron_down
+	closed = "\u{EAB6}", -- nf-cod-chevron_right
+}
+
 -- lualine custom components
 M.statusline = {
 	formatters = "󰉼",

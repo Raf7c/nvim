@@ -33,6 +33,7 @@ function pack.init()
 		{ src = "https://github.com/rachartier/tiny-inline-diagnostic.nvim" },
 		{ src = "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim" },
 		{ src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
+		{ src = "https://github.com/luukvbaal/statuscol.nvim" }, -- icon-only fold column
 	})
 
 	import("plugins")

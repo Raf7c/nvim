@@ -31,6 +31,34 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- Native treesitter folds; high foldlevel = everything open on load.
+-- Filetypes without a parser simply get no folds
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+-- fold indicators in the gutter (glyphs from utils/icons)
+local fold_icons = require("utils.icons").fold
+vim.o.foldcolumn = "1"
+vim.opt.fillchars:append({
+	foldopen = fold_icons.open,
+	foldclose = fold_icons.closed,
+	foldsep = " ",
+})
+-- statuscol: redraw the fold column with the glyphs only -- the native
+-- rendering falls back to fold-level DIGITS once nesting exceeds the
+-- foldcolumn width (:h 'foldcolumn')
+local builtin = require("statuscol.builtin")
+require("statuscol").setup({
+	segments = {
+		{ text = { builtin.foldfunc }, click = "v:lua.ScFa" },
+		{ text = { "%s" }, click = "v:lua.ScSa" },
+		{ text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+	},
+})
+vim.keymap.set("n", "<leader>zc", "zc", { desc = "Close Fold (cursor)" })
+vim.keymap.set("n", "<leader>zo", "zo", { desc = "Open Fold (cursor)" })
+
 -- mini.icons also impersonates nvim-web-devicons for the plugins that expect it
 require("mini.icons").setup()
 MiniIcons.mock_nvim_web_devicons()

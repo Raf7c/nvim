@@ -11,6 +11,7 @@ require("which-key").setup({
 		{ "<leader>fh", group = "Help" },
 		{ "<leader>s", group = "Search" },
 		{ "<leader>sn", group = "Notifications" },
+		{ "<leader>z", group = "Folds" },
 		{ "<leader>c", group = "LSP" },
 		{ "<leader>cw", group = "Workspace" },
 		{ "<leader>g", group = "Git" },
