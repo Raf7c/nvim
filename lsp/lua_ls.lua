@@ -1,17 +1,19 @@
--- lua_ls: standalone config (no nvim-lspconfig), used by vim.lsp.enable().
 return {
 	cmd = { "lua-language-server" },
 	filetypes = { "lua" },
-	-- nested lists = equal priority within a group (:h vim.lsp.Config)
-	root_markers = { { ".luarc.json", ".luarc.jsonc" }, { ".stylua.toml", "stylua.toml" }, { ".git" } },
+	-- nested lists = priority groups (:h vim.lsp.Config)
+	root_markers = { { ".luarc.json", ".luarc.jsonc", ".emmyrc.json" }, { ".stylua.toml", "stylua.toml" }, { ".git" } },
 	settings = {
 		Lua = {
 			runtime = {
-				version = "LuaJIT", -- Neovim's Lua; wrong for standalone Lua 5.x projects
+				version = "LuaJIT", -- Neovim's Lua
+				-- resolve require("config.opts") -> lua/config/opts.lua, the
+				-- way Neovim loads modules (goto-definition on module names)
+				path = { "lua/?.lua", "lua/?/init.lua" },
 			},
 			diagnostics = {
-				globals = { "vim" }, -- don't warn about the vim global
-				disable = { "missing-fields" }, -- too noisy on partial setup() tables
+				globals = { "vim", "Snacks", "MiniIcons" }, -- runtime globals
+				disable = { "missing-fields" },
 			},
 			workspace = {
 				checkThirdParty = false,

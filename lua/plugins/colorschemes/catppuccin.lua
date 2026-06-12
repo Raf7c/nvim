@@ -8,6 +8,6 @@ require("catppuccin").setup({
 	},
 })
 
--- "catppuccin-nvim": since nvim 0.12 a builtin "catppuccin" ships with the
--- editor; the plugin's colorscheme was renamed to avoid the conflict
+-- "catppuccin-nvim": nvim 0.12 ships a builtin "catppuccin" colorscheme;
+-- the plugin renamed its entry point to avoid the conflict
 vim.cmd.colorscheme("catppuccin-nvim")

@@ -10,10 +10,10 @@ vim.api.nvim_create_autocmd("User", {
 	end,
 })
 
--- Two explorers on purpose: ee = mini.files at the current file, et = snacks sidebar
+-- Two explorers: ee = mini.files at the current file, et = snacks sidebar
 vim.keymap.set("n", "<leader>ee", function()
 	local path = vim.api.nvim_buf_get_name(0)
-	-- reveal the file if it exists on disk, otherwise open its folder (or cwd)
+	-- reveal the file if it exists on disk, otherwise its folder, otherwise cwd
 	if path == "" or not vim.uv.fs_stat(path) then
 		path = vim.fn.fnamemodify(path, ":h")
 		if path == "" or not vim.uv.fs_stat(path) then

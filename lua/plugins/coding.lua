@@ -1,5 +1,9 @@
--- nvim-treesitter (main branch): install missing parsers, async
+-- Install missing tree-sitter parsers (async, no-op when present).
+-- c and lua ship with neovim but are reinstalled on purpose: parser and
+-- queries then both come from nvim-treesitter (one consistent source)
 require("nvim-treesitter").install({
+	"c",
+	"cpp",
 	"lua",
 	"python",
 	"javascript",
@@ -7,10 +11,17 @@ require("nvim-treesitter").install({
 	"tsx",
 	"json",
 	"css",
+	"scss",
 	"html",
 	"yaml",
 	"toml",
+	"dockerfile",
 })
+
+-- no dedicated jsonc parser on the main branch: reuse the json one
+vim.treesitter.language.register("json", "jsonc")
+-- compound yaml filetypes share the yaml parser
+vim.treesitter.language.register("yaml", { "yaml.docker-compose", "yaml.ansible" })
 
 vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("treesitter-highlight", { clear = true }),
@@ -20,18 +31,17 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
--- mini.icons: icon provider, exposed under the nvim-web-devicons API for the
+-- mini.icons also impersonates nvim-web-devicons for the plugins that expect it
 require("mini.icons").setup()
 MiniIcons.mock_nvim_web_devicons()
 
 require("mini.pairs").setup()
 require("mini.cursorword").setup()
 
--- blink.cmp: completion
 local cmp = require("blink.cmp")
 local icons = require("utils.icons")
 
--- Build the fuzzy matcher if needed (no-op once built), per official vim.pack doc
+-- Build the fuzzy matcher (no-op once built)
 cmp.build():pwait()
 
 cmp.setup({
@@ -55,8 +65,8 @@ cmp.setup({
 			max_height = 12,
 			draw = {
 				treesitter = { "lsp" },
-				-- your own kind icons (matches navic/snacks); falls back to blink's default
 				components = {
+					-- centralized kind icons (utils/icons); blink's as fallback
 					kind_icon = {
 						text = function(ctx)
 							return icons.kinds[ctx.kind] or (ctx.kind_icon .. ctx.icon_gap)

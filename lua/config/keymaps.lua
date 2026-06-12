@@ -3,7 +3,6 @@ local keymaps = {}
 function keymaps.init()
 	local keymap = vim.keymap
 
-	-- Config
 	keymap.set("n", "<leader>re", "<cmd>restart<cr>", { desc = "Restart Neovim (:restart)" })
 
 	keymap.set("n", "<up>", "<nop>", { silent = true })
@@ -21,7 +20,11 @@ function keymaps.init()
 
 	keymap.set({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch", silent = true })
 
-	-- Save
+	-- Windows (<leader>w group, declared in which-key)
+	keymap.set("n", "<leader>wd", "<C-W>c", { desc = "Close Window" })
+	keymap.set("n", "<leader>ws", "<C-W>s", { desc = "Split Below" })
+	keymap.set("n", "<leader>wv", "<C-W>v", { desc = "Split Right" })
+
 	keymap.set("n", "<C-s>", "<cmd>w<cr>", { desc = "Save file", silent = true })
 end
 

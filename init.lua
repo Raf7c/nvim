@@ -1,4 +1,4 @@
--- Captured as early as possible to measure startup time (see snacks dashboard)
+-- Startup time, read by the snacks dashboard
 _G.START_TIME = vim.uv.hrtime()
 
 -- Byte-compiled Lua module cache (opt-in, :h vim.loader)

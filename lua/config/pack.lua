@@ -1,7 +1,7 @@
 local pack = {}
 
--- Load every .lua file in a folder (e.g. import("plugins.colorschemes"))
--- Alphabetical order, non-recursive (subfolders are imported separately).
+-- Load every .lua file in a folder, alphabetical order, non-recursive
+-- (subfolders are imported separately).
 local function import(mod)
 	local dir = vim.fn.stdpath("config") .. "/lua/" .. mod:gsub("%.", "/")
 	for _, file in ipairs(vim.fn.globpath(dir, "*.lua", false, true)) do
@@ -10,8 +10,6 @@ local function import(mod)
 end
 
 function pack.init()
-	-- All plugin sources, installed and loaded here.
-	-- Configuration lives in lua/plugins/ (one file per plugin).
 	vim.pack.add({
 		{ src = "https://github.com/f-person/auto-dark-mode.nvim" },
 		{ src = "https://github.com/catppuccin/nvim", name = "catppuccin-nvim" },
@@ -23,15 +21,18 @@ function pack.init()
 		{ src = "https://github.com/lewis6991/gitsigns.nvim" },
 		{ src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
 		{ src = "https://github.com/SmiteshP/nvim-navic" },
-		{ src = "https://github.com/christoomey/vim-tmux-navigator" }, -- <C-h/j/k/l> splits <-> tmux panes, no config
+		{ src = "https://github.com/christoomey/vim-tmux-navigator" }, -- no config file
+		{ src = "https://github.com/Diogo-ss/42-header.nvim" },
 		{ src = "https://github.com/saghen/blink.lib" }, -- blink.cmp dependency
-		{ src = "https://github.com/saghen/blink.cmp" }, -- v2 (main); fuzzy lib downloaded/built by blink.lua
-		{ src = "https://github.com/rafamadriz/friendly-snippets" }, -- snippets for the blink snippet source
+		{ src = "https://github.com/saghen/blink.cmp" },
+		{ src = "https://github.com/rafamadriz/friendly-snippets" },
+		{ src = "https://github.com/b0o/SchemaStore.nvim" }, -- data only, used by lsp/jsonls.lua
 		{ src = "https://github.com/mason-org/mason.nvim" },
 		{ src = "https://github.com/stevearc/conform.nvim" },
 		{ src = "https://github.com/mfussenegger/nvim-lint" },
 		{ src = "https://github.com/rachartier/tiny-inline-diagnostic.nvim" },
 		{ src = "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim" },
+		{ src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
 	})
 
 	import("plugins")

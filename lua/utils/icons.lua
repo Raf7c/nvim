@@ -1,5 +1,4 @@
--- Centralized icons for the whole config.
--- Add new icon groups here and reference them with require("utils.icons").
+-- Centralized icons for the whole config
 local M = {}
 
 M.diagnostics = {
@@ -19,7 +18,7 @@ M.git = {
 	untracked = "▎",
 }
 
--- per-file git status (used by the snacks explorer)
+-- per-file git status (snacks explorer)
 M.git_status = {
 	added = "✚",
 	modified = "",
@@ -39,7 +38,7 @@ M.statusline = {
 	diff = { added = "󰐕 ", modified = "󰏫 ", removed = "󰍵 " },
 }
 
--- LSP symbol kinds — your own icons, used by navic, blink and snacks.
+-- LSP symbol kinds (navic, blink, snacks)
 M.kinds = {
 	File = "󰈙 ",
 	Module = "󰏗 ",

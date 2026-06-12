@@ -3,12 +3,12 @@ local icons = require("utils.icons")
 require("snacks").setup({
 	bigfile = { enabled = true },
 	indent = { enabled = true },
-	scope = { enabled = true }, -- adds ii/ai textobjects and [i/]i motions
+	scope = { enabled = true },
 	explorer = { enabled = true },
 	image = { enabled = true },
 	notifier = {
 		enabled = true,
-		level = vim.log.levels.INFO, -- default shows everything (TRACE)
+		level = vim.log.levels.INFO,
 	},
 	lazygit = {
 		enabled = true,
@@ -52,7 +52,7 @@ require("snacks").setup({
 	picker = {
 		enabled = true, -- also replaces vim.ui.select
 		sources = {
-			files = { hidden = true }, -- show dotfiles
+			files = { hidden = true },
 		},
 		icons = {
 			git = icons.git_status,

@@ -1,4 +1,3 @@
--- basedpyright: standalone config (no nvim-lspconfig), used by vim.lsp.enable().
 return {
 	cmd = { "basedpyright-langserver", "--stdio" },
 	filetypes = { "python" },
@@ -18,18 +17,14 @@ return {
 					reportUnusedFunction = "information",
 					reportMissingTypeStubs = "information",
 					reportMissingParameterType = "warning",
-					reportMissingReturnType = "warning",
+					reportUnknownParameterType = "warning",
 					reportGeneralTypeIssues = "error",
 					reportOptionalMemberAccess = "warning",
 					reportOptionalSubscript = "warning",
 					reportPrivateImportUsage = "warning",
 				},
 				inlayHints = {
-					functionReturnTypes = true,
-					callArgumentNames = true,
 					variableTypes = false,
-					pytestParameters = true,
-					genericTypes = true,
 				},
 			},
 		},

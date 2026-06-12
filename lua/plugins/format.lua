@@ -1,6 +1,5 @@
 -- Formatting engine. Formatters come from the `formatters`/`custom_formatters`
--- fields of plugins/lang/*.lua; a value is a list or a function(bufnr)
--- (project-aware selection via utils/project.resolve).
+-- fields of plugins/lang/*.lua; a value is a list or a function(bufnr).
 local formatters_by_ft, custom_formatters = {}, {}
 for _, lang in ipairs(require("utils.langs").list()) do
 	for ft, formatters in pairs(lang.formatters or {}) do
@@ -12,8 +11,10 @@ for _, lang in ipairs(require("utils.langs").list()) do
 end
 
 require("conform").setup({
-	default_format_opts = { lsp_format = "never" }, -- Conform only, never the LSP
-	format_on_save = { timeout_ms = 1000 },
+	-- deliberate pin (= current default): formatting goes through conform
+	-- only, never the LSP servers, even if conform's default ever changes
+	default_format_opts = { lsp_format = "never" },
+	format_on_save = { timeout_ms = 2000 }, -- default 1000 is tight for prettier cold starts
 	formatters_by_ft = formatters_by_ft,
 	formatters = custom_formatters,
 })
@@ -22,8 +23,7 @@ vim.keymap.set({ "n", "v" }, "<leader>cf", function()
 	require("conform").format({ async = true })
 end, { desc = "Format buffer/selection" })
 
--- Formatters for the current buffer, memoized per buffer for the statusline
--- (read by plugins/lualine.lua; same pattern as vim.b.active_linter)
+-- Formatters of the current buffer, memoized for the statusline
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
 	group = vim.api.nvim_create_augroup("statusline-formatters", { clear = true }),
 	callback = function(args)

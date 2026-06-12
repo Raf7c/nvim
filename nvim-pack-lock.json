@@ -1,5 +1,13 @@
 {
   "plugins": {
+    "42-header.nvim": {
+      "rev": "213eed395eebe317700800daf26f476a8c94989c",
+      "src": "https://github.com/Diogo-ss/42-header.nvim"
+    },
+    "SchemaStore.nvim": {
+      "rev": "c87dda7c8e5c4437d0d270ea6b73afb683607706",
+      "src": "https://github.com/b0o/SchemaStore.nvim"
+    },
     "auto-dark-mode.nvim": {
       "rev": "54058b4fe414bd64bd2904a6f8a63f1f14e3d8df",
       "src": "https://github.com/f-person/auto-dark-mode.nvim"
@@ -61,6 +69,10 @@
       "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
+    },
+    "render-markdown.nvim": {
+      "rev": "5adf0895310c1904e5abfaad40a2baad7fe44a07",
+      "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "snacks.nvim": {
       "rev": "882c996cf28183f4d63640de0b4c02ec886d01f2",

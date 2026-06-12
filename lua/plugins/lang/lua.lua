@@ -1,6 +1,6 @@
--- Lua: simple case — stylua formatter, no linter.
+-- Lua: lua_ls + stylua
 return {
-	lsp = { "lua_ls" }, -- config in nvim/lsp/lua_ls.lua
+	lsp = { "lua_ls" },
 	tools = { "lua-language-server", "stylua" },
 	formatters = { lua = { "stylua" } },
 }

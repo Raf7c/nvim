@@ -5,7 +5,6 @@ require("which-key").setup({
 	},
 	spec = {
 		{ "<leader>w", group = "Windows" },
-		{ "<leader>t", group = "Tabs" },
 		{ "<leader>x", group = "Diagnostics" },
 		{ "<leader>e", group = "Explorer" },
 		{ "<leader>f", group = "Find" },
@@ -28,8 +27,8 @@ require("nvim-navic").setup({
 	depth_limit_indicator = "…",
 })
 
--- Global winbar: avoids setting vim.wo on the wrong window during LspAttach (nvim-navic doc)
-vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
+-- The winbar itself is set per window on LspAttach (plugins/lsp/keymaps.lua):
+-- a global 'winbar' would show an empty bar in every LSP-less window
 
 -- incline.nvim: floating filename in each window
 local helpers = require("incline.helpers")
@@ -62,10 +61,9 @@ require("incline").setup({
 	end,
 })
 
--- lualine: statusline
 local icons = require("utils.icons")
 
--- Formatters for the current buffer (set by plugins/format.lua via vim.b.active_formatters)
+-- set by plugins/format.lua via vim.b.active_formatters
 local function formatters()
 	local active = vim.b.active_formatters
 	if not active or active == "" then
@@ -74,17 +72,39 @@ local function formatters()
 	return icons.statusline.formatters .. " " .. active
 end
 
--- Active linters (set by plugins/lint.lua via vim.b.active_linter)
+-- nvim-lint linters (vim.b.active_linter, set by plugins/lint.lua) plus the
+-- linters running inside an attached LSP server, invisible otherwise.
+-- clangd only counts when actually started with --clang-tidy (lang/c.lua
+-- strips the flag when the 42 norm takes over)
+local function embedded_linter(client)
+	if client.name == "ansiblels" then
+		return "ansible-lint"
+	end
+	if
+		client.name == "clangd"
+		and type(client.config.cmd) == "table"
+		and vim.tbl_contains(client.config.cmd, "--clang-tidy")
+	then
+		return "clang-tidy"
+	end
+end
+
 local function linters()
+	local names = {}
+	for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+		names[#names + 1] = embedded_linter(client)
+	end
 	local active = vim.b.active_linter
-	if not active or active == "" then
+	if active and active ~= "" then
+		names[#names + 1] = active
+	end
+	if #names == 0 then
 		return ""
 	end
-	return icons.statusline.linters .. " " .. active
+	return icons.statusline.linters .. " " .. table.concat(names, ", ")
 end
 
 require("lualine").setup({
-	-- theme/globalstatus defaults already follow the colorscheme and laststatus = 3
 	options = {
 		component_separators = "|",
 		section_separators = "",

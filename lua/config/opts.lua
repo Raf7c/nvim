@@ -3,7 +3,7 @@ local opts = {}
 function opts.init()
 	local opt = vim.opt
 
-	-- Providers: unused, disabled to silence checkhealth warnings (:h provider)
+	-- Unused providers (:h provider)
 	vim.g.loaded_node_provider = 0
 	vim.g.loaded_perl_provider = 0
 	vim.g.loaded_python3_provider = 0
@@ -25,18 +25,17 @@ function opts.init()
 	opt.laststatus = 3
 	opt.cmdheight = 0
 
-	-- Indentation: global DEFAULT (overridden by after/ftplugin/)
+	-- Indentation (overridden by after/ftplugin/)
 	opt.tabstop = 4
 	opt.softtabstop = 4
 	opt.shiftwidth = 4
-	opt.expandtab = false
 
 	-- Search
 	opt.ignorecase = true
 	opt.smartcase = true
 	opt.inccommand = "split"
 
-	-- Native completion only; blink.cmp does not read 'completeopt'
+	-- Native completion only (blink.cmp ignores 'completeopt')
 	opt.completeopt = "menuone,noselect,fuzzy,nosort"
 
 	-- Files

@@ -13,10 +13,9 @@ keymap.set("n", "<leader>xD", function()
 end, { desc = "All Diagnostics", silent = true })
 keymap.set("n", "<leader>xq", vim.diagnostic.setqflist, { desc = "Quickfix Diagnostics", silent = true })
 
--- LSP (buffer-local, on attach)
--- Neovim already provides defaults: K hover, grn rename, gra code action,
--- grr references, gri implementation, grt type definition, gO symbols,
--- <C-s> signature help (insert). Below: personal additions only.
+-- LSP (buffer-local, on attach). Builtin defaults already cover: K hover,
+-- grn rename, gra code action, grr references, gri implementation,
+-- grt type definition, gO symbols, <C-s> signature help (insert).
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("lsp-keymaps", { clear = true }),
 	callback = function(ev)
@@ -24,7 +23,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			keymap.set(mode, lhs, rhs, { buffer = ev.buf, desc = desc, silent = true })
 		end
 
-		-- Navigation (gri default covers implementation; builtin gi stays untouched)
+		-- Navigation
 		map("n", "<leader>cd", vim.lsp.buf.definition, "Goto Definition")
 		map("n", "gD", vim.lsp.buf.declaration, "Goto Declaration")
 		map("n", "<leader>cr", vim.lsp.buf.references, "References")
@@ -40,10 +39,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			})
 		end, "Organize Imports")
 
-		-- Symbols
-		map("n", "<leader>cs", function()
-			Snacks.picker.lsp_symbols()
-		end, "Document Symbols")
+		-- Symbols (document symbols live on <leader>fs, in the Find group)
 		map("n", "<leader>cws", function()
 			Snacks.picker.lsp_workspace_symbols()
 		end, "Workspace Symbols")
@@ -60,6 +56,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			map("n", "<leader>ch", function()
 				vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = ev.buf }))
 			end, "Toggle Inlay Hints")
+		end
+
+		-- navic breadcrumb winbar, per window: only where symbols exist
+		-- (a global 'winbar' would show an empty bar in LSP-less windows)
+		if client and client:supports_method("textDocument/documentSymbol") then
+			vim.wo[0][0].winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
 		end
 	end,
 })

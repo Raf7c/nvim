@@ -1,6 +1,5 @@
--- Linting engine. Linters come from the `linters`/`custom_linters` fields of
--- plugins/lang/*.lua; a value is a list or a function(bufnr)
--- (project-aware selection via utils/project.resolve).
+-- Linting engine. Linters come from the `linters`/`custom_linters` fields
+-- of plugins/lang/*.lua; a value is a list or a function(bufnr).
 local linters_by_ft = {}
 for _, lang in ipairs(require("utils.langs").list()) do
 	for ft, linters in pairs(lang.linters or {}) do

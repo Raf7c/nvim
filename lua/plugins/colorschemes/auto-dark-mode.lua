@@ -1,4 +1,4 @@
--- Default hooks already set 'background' to dark/light; only the poll rate deviates.
+-- Default hooks already toggle 'background'
 require("auto-dark-mode").setup({
-	update_interval = 1000, -- default: 3000
+	update_interval = 1000,
 })

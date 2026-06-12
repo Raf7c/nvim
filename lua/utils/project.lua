@@ -1,9 +1,6 @@
 -- Project-aware tool selection, used by plugins/lang/*.lua.
---
--- A marker is either a filename, or { "filename", has = "substring" }.
--- A project "uses" a tool when one of its markers matches: the file
--- exists upward from the buffer (and, if `has` is given, contains that
--- substring — e.g. a "[tool.ruff" section inside pyproject.toml).
+-- A marker is a filename, or { "filename", has = "substring" }: it matches
+-- when the file exists upward from the buffer (and contains `has` if given).
 local M = {}
 
 local function present(bufnr, markers)
@@ -28,7 +25,7 @@ local function present(bufnr, markers)
 	return false
 end
 
--- Tools of every candidate the project is configured for (in order, deduped).
+-- Tools of every candidate the project is configured for (deduped)
 local function matched(bufnr, candidates)
 	local out, seen = {}, {}
 	for _, c in ipairs(candidates) do
@@ -45,23 +42,14 @@ local function matched(bufnr, candidates)
 end
 
 -- resolve(spec) returns { format = fn(bufnr), lint = fn(bufnr) } for conform/nvim-lint.
---
--- As soon as the project configures ANY tool (formatter OR linter),
--- only the project's tools are used — defaults are NOT added to fill gaps.
--- Defaults apply only when the project configures nothing at all.
---
--- spec = {
---   formatters = { { tools = {...}, markers = {...} }, ... },
---   linters    = { { tools = {...}, markers = {...} }, ... },
---   default_formatters = { ... },
---   default_linters    = { ... },
--- }
+-- As soon as the project configures ANY tool, only the project's tools are
+-- used; the defaults apply only when the project configures nothing at all.
 function M.resolve(spec)
 	local function compute(bufnr)
 		local f = matched(bufnr, spec.formatters or {})
 		local l = matched(bufnr, spec.linters or {})
 		if #f > 0 or #l > 0 then
-			return f, l -- project configures something: use exactly that
+			return f, l
 		end
 		return spec.default_formatters or {}, spec.default_linters or {}
 	end

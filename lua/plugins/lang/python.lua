@@ -1,6 +1,4 @@
--- Python: ruff by default (format + lint). As soon as the project configures
--- any tool, only the project's tools are used (no default added to fill gaps).
--- To use a tool you don't have yet, just add its mason name to `tools`.
+-- Python: ruff by default; project-configured tools win (see utils/project)
 local project = require("utils.project")
 
 local m = {
@@ -35,7 +33,7 @@ local tools = project.resolve({
 })
 
 return {
-	lsp = { "basedpyright" }, -- config in nvim/lsp/basedpyright.lua
+	lsp = { "basedpyright" },
 	tools = {
 		"basedpyright",
 		"ruff",
