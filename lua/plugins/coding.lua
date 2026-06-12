@@ -1,22 +1,26 @@
 -- Install missing tree-sitter parsers (async, no-op when present).
 -- c and lua ship with neovim but are reinstalled on purpose: parser and
--- queries then both come from nvim-treesitter (one consistent source)
-require("nvim-treesitter").install({
-	"c",
-	"cpp",
-	"lua",
-	"python",
-	"javascript",
-	"typescript",
-	"tsx",
-	"json",
-	"css",
-	"scss",
-	"html",
-	"yaml",
-	"toml",
-	"dockerfile",
-})
+-- queries then both come from nvim-treesitter (one consistent source).
+-- No tree-sitter CLI (42 machines) = no install: neovim's bundled parsers
+-- (c, lua...) still work, the rest falls back to regex syntax
+if vim.fn.executable("tree-sitter") == 1 then
+	require("nvim-treesitter").install({
+		"c",
+		"cpp",
+		"lua",
+		"python",
+		"javascript",
+		"typescript",
+		"tsx",
+		"json",
+		"css",
+		"scss",
+		"html",
+		"yaml",
+		"toml",
+		"dockerfile",
+	})
+end
 
 -- no dedicated jsonc parser on the main branch: reuse the json one
 vim.treesitter.language.register("json", "jsonc")
