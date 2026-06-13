@@ -6,6 +6,9 @@ return {
 	-- A FUNCTION returning {} is required: conform skips empty tables and
 	-- would fall back to the "yaml" key (yamlfmt would rewrite playbooks)
 	formatters = { ["yaml.ansible"] = function() return {} end },
+	-- ansiblels runs ansible-lint internally (no nvim-lint entry); surfaced
+	-- in the statusline, keyed by client name (see plugins/ui.lua)
+	embedded_linters = { ansiblels = function() return "ansible-lint" end },
 	setup = function()
 		vim.filetype.add({
 			pattern = {

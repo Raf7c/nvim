@@ -6,6 +6,16 @@ local M = {
 	lsp = { "clangd" },
 	tools = { "clangd", "clang-format" },
 	formatters = { c = { "clang_format" }, cpp = { "clang_format" } },
+	-- clangd runs clang-tidy internally (no nvim-lint entry); shown in the
+	-- statusline only while the flag survives -- normc42 strips it below, so
+	-- the runtime cmd check covers both modes (see plugins/ui.lua)
+	embedded_linters = {
+		clangd = function(client)
+			if type(client.config.cmd) == "table" and vim.tbl_contains(client.config.cmd, "--clang-tidy") then
+				return "clang-tidy"
+			end
+		end,
+	},
 }
 
 if require("config.langs").normc42 ~= false then

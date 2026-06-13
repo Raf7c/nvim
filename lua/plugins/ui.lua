@@ -73,27 +73,27 @@ local function formatters()
 	return icons.statusline.formatters .. " " .. active
 end
 
--- nvim-lint linters (vim.b.active_linter, set by plugins/lint.lua) plus the
--- linters running inside an attached LSP server, invisible otherwise.
--- clangd only counts when actually started with --clang-tidy (lang/c.lua
--- strips the flag when the 42 norm takes over)
-local function embedded_linter(client)
-	if client.name == "ansiblels" then
-		return "ansible-lint"
-	end
-	if
-		client.name == "clangd"
-		and type(client.config.cmd) == "table"
-		and vim.tbl_contains(client.config.cmd, "--clang-tidy")
-	then
-		return "clang-tidy"
+-- LSP servers that run a linter internally (no nvim-lint entry, invisible
+-- otherwise). The per-server logic lives in the plugins/lang/*.lua fiches
+-- via their `embedded_linters` field, keyed by client name; here we only
+-- aggregate it. (e.g. clangd's --clang-tidy gate sits next to the normc42
+-- toggle that strips the flag, in lang/c.lua.)
+local embedded_linters = {}
+for _, lang in ipairs(require("utils.langs").list()) do
+	for name, fn in pairs(lang.embedded_linters or {}) do
+		embedded_linters[name] = fn
 	end
 end
 
+-- nvim-lint linters (vim.b.active_linter, set by plugins/lint.lua) plus the
+-- linters running inside an attached LSP server.
 local function linters()
 	local names = {}
 	for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
-		names[#names + 1] = embedded_linter(client)
+		local fn = embedded_linters[client.name]
+		if fn then
+			names[#names + 1] = fn(client)
+		end
 	end
 	local active = vim.b.active_linter
 	if active and active ~= "" then
