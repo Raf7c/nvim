@@ -6,6 +6,7 @@ require("tiny-inline-diagnostic").setup({
 local icons = require("utils.icons")
 vim.diagnostic.config({
 	severity_sort = true,
+	update_in_insert = true, -- refresh diagnostics while typing (LSP + nvim-lint)
 	virtual_text = false,
 	signs = {
 		text = {

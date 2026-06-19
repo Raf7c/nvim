@@ -20,7 +20,13 @@ require("conform").setup({
 })
 
 vim.keymap.set({ "n", "v" }, "<leader>cf", function()
-	require("conform").format({ async = true })
+	require("conform").format({ async = true }, function(err)
+		-- conform fires no buffer event, so nvim-lint would keep showing the
+		-- pre-format diagnostics: re-lint the formatted buffer (plugins/lint.lua)
+		if not err then
+			vim.api.nvim_exec_autocmds("User", { pattern = "LintRefresh" })
+		end
+	end)
 end, { desc = "Format buffer/selection" })
 
 -- Formatters of the current buffer, memoized for the statusline

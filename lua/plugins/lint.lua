@@ -10,18 +10,57 @@ for _, lang in ipairs(require("utils.langs").list()) do
 	end
 end
 
+local function lint(buf)
+	local linters = linters_by_ft[vim.bo[buf].filetype]
+	if type(linters) == "function" then
+		linters = linters(buf)
+	end
+	if linters and #linters > 0 then
+		vim.b[buf].active_linter = table.concat(linters, ", ") -- read by the statusline
+		require("lint").try_lint(linters)
+	else
+		vim.b[buf].active_linter = nil
+	end
+end
+
+local group = vim.api.nvim_create_augroup("lint", { clear = true })
+
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-	group = vim.api.nvim_create_augroup("lint", { clear = true }),
+	group = group,
 	callback = function(args)
-		local linters = linters_by_ft[vim.bo[args.buf].filetype]
-		if type(linters) == "function" then
-			linters = linters(args.buf)
-		end
-		if linters and #linters > 0 then
-			vim.b[args.buf].active_linter = table.concat(linters, ", ") -- read by the statusline
-			require("lint").try_lint(linters)
-		else
-			vim.b[args.buf].active_linter = nil
-		end
+		lint(args.buf)
+	end,
+})
+
+-- Live linting while editing (insert mode included). Linters spawn an external
+-- process, so TextChanged/TextChangedI fire on every keystroke: debounce to
+-- lint only once typing pauses. Pairs with update_in_insert (lsp/lsp.lua) so
+-- the diagnostics actually refresh on screen before InsertLeave.
+local timer = assert(vim.uv.new_timer())
+vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+	group = group,
+	callback = function(args)
+		timer:stop()
+		timer:start(
+			300,
+			0,
+			vim.schedule_wrap(function()
+				if vim.api.nvim_buf_is_valid(args.buf) then
+					lint(args.buf)
+				end
+			end)
+		)
+	end,
+})
+
+-- On-demand re-lint: nvim-lint otherwise only fires on the events above, so a
+-- manual conform format (<leader>cf, async, no write) leaves stale diagnostics
+-- on screen and a stale active_linter in the statusline until the next
+-- :w/InsertLeave. plugins/format.lua emits this once a manual format finishes.
+vim.api.nvim_create_autocmd("User", {
+	pattern = "LintRefresh",
+	group = group,
+	callback = function()
+		lint(vim.api.nvim_get_current_buf())
 	end,
 })
