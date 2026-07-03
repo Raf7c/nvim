@@ -5,7 +5,7 @@
 return {
 	ansible = true,
 	c = true,
-	normc42 = false, -- not a fiche: flag read by lang/c.lua. true = 42 norm for C (c_formatter_42 + norminette, clangd without clang-tidy); false = clang-format
+	normc42 = true, -- not a fiche: flag read by lang/c.lua. true = 42 norm for C (c_formatter_42 + norminette, clangd without clang-tidy); false = clang-format
 	css = true,
 	docker = true,
 	html = true,

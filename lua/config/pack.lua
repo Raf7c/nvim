@@ -23,8 +23,9 @@ function pack.init()
 		{ src = "https://github.com/SmiteshP/nvim-navic" },
 		{ src = "https://github.com/christoomey/vim-tmux-navigator" }, -- no config file
 		{ src = "https://github.com/Diogo-ss/42-header.nvim" },
-		{ src = "https://github.com/saghen/blink.lib" }, -- blink.cmp dependency
-		{ src = "https://github.com/saghen/blink.cmp" },
+		-- v1 stable (latest 1.x tag); on a release tag blink downloads its
+		-- prebuilt fuzzy binary itself (no build step, no blink.lib)
+		{ src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1.*") },
 		{ src = "https://github.com/rafamadriz/friendly-snippets" },
 		{ src = "https://github.com/b0o/SchemaStore.nvim" }, -- data only, used by lsp/jsonls.lua
 		{ src = "https://github.com/mason-org/mason.nvim" },

@@ -5,7 +5,7 @@
 local M = {
 	lsp = { "clangd" },
 	tools = { "clangd", "clang-format" },
-	formatters = { c = { "clang_format" }, cpp = { "clang_format" } },
+	formatters = { c = { "clang-format" }, cpp = { "clang-format" } },
 	-- clangd runs clang-tidy internally (no nvim-lint entry); shown in the
 	-- statusline only while the flag survives -- normc42 strips it below, so
 	-- the runtime cmd check covers both modes (see plugins/ui.lua)
