@@ -6,6 +6,7 @@ require("snacks").setup({
 	scope = { enabled = true },
 	explorer = { enabled = true },
 	image = { enabled = true },
+	input = { enabled = true }, -- floating window for vim.ui.input (LSP rename, new file...)
 	notifier = {
 		enabled = true,
 		level = vim.log.levels.INFO,
